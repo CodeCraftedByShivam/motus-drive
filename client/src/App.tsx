@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
+import LandingPage from './components/landing/LandingPage'; // Add this import
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Dashboard from './components/dashboard/Dashboard';
@@ -55,7 +56,10 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
+            {/* Landing page - accessible to everyone */}
+            <Route path="/" element={<LandingPage />} />
+            
+            {/* Auth routes - only for non-logged-in users */}
             <Route 
               path="/login" 
               element={
@@ -72,6 +76,8 @@ function App() {
                 </PublicRoute>
               } 
             />
+            
+            {/* Protected dashboard */}
             <Route 
               path="/dashboard" 
               element={
