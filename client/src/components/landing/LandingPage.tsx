@@ -1,34 +1,26 @@
 import React from 'react';
-import { Container, Typography, Box, Button } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import Navbar from './Navbar';
+import Hero from './Hero';
+import Benefits from './Benefits';
+import Process from './Process';
+import Testimonials from './Testimonials';
+import CTA from './CTA';
+import Footer from './Footer';
+import { Box } from '@mui/material';
 
 const LandingPage: React.FC = () => (
-  <Container sx={{ py: 8, textAlign: 'center' }}>
-    <Typography variant="h2" gutterBottom>
-      Welcome to Motus Drive
-    </Typography>
-    <Typography variant="h6" sx={{ mb: 4 }}>
-      Professional driving lessons at your convenience
-    </Typography>
-    <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
-      <Button
-        component={RouterLink}
-        to="/register"
-        variant="contained"
-        size="large"
-      >
-        Sign Up
-      </Button>
-      <Button
-        component={RouterLink}
-        to="/login"
-        variant="outlined"
-        size="large"
-      >
-        Log In
-      </Button>
-    </Box>
-  </Container>
+  <Box sx={{ 
+    background: 'linear-gradient(180deg, #f8f9fa 0%, #ffffff 50%, #f1f3f4 100%)',
+    minHeight: '100vh'
+  }}>
+    <Navbar />
+    <Hero />
+    <Benefits />
+    <Process />
+    <Testimonials />
+    <CTA />
+    <Footer />
+  </Box>
 );
 
 export default LandingPage;
