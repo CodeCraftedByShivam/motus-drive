@@ -3,82 +3,92 @@ import { Box, Typography, Container, Card, CardContent } from '@mui/material';
 import { DirectionsCar, Schedule, Verified, School } from '@mui/icons-material';
 
 const benefits = [
-  { 
-    icon: <Verified fontSize="large" />, 
-    title: 'Certified Instructors', 
-    text: 'All instructors are background-checked, licensed, and experienced professionals.'
+  {
+    icon: <Verified fontSize="large" />,
+    title: 'Certified Instructors',
+    text: 'All instructors are background-checked, licensed, and experienced professionals.',
   },
-  { 
-    icon: <Schedule fontSize="large" />, 
-    title: 'Flexible Scheduling', 
-    text: 'Book lessons that fit your schedule - mornings, evenings, or weekends.'
+  {
+    icon: <Schedule fontSize="large" />,
+    title: 'Flexible Scheduling',
+    text: 'Book lessons that fit your schedule - mornings, evenings, or weekends.',
   },
-  { 
-    icon: <DirectionsCar fontSize="large" />, 
-    title: 'Modern Vehicles', 
-    text: 'Learn on well-maintained, dual-control cars with latest safety features.'
+  {
+    icon: <DirectionsCar fontSize="large" />,
+    title: 'Modern Vehicles',
+    text: 'Learn on well-maintained, dual-control cars with latest safety features.',
   },
-  { 
-    icon: <School fontSize="large" />, 
-    title: 'Proven Methods', 
-    text: 'Structured curriculum designed to make you a safe and confident driver.'
+  {
+    icon: <School fontSize="large" />,
+    title: 'Proven Methods',
+    text: 'Structured curriculum designed to make you a safe and confident driver.',
   },
 ];
 
 const Benefits: React.FC = () => (
   <Box sx={{ py: 10, bgcolor: '#ffffff' }}>
-    <Container>
-      <Typography 
-        variant="h2" 
-        textAlign="center" 
-        fontWeight={800} 
+    <Container maxWidth="lg">
+      {/* Heading */}
+      <Typography
+        variant="h2"
+        textAlign="center"
+        fontWeight={800}
         gutterBottom
         sx={{
           color: '#222222',
-          mb: 2
+          mb: 2,
+          px: { xs: 2, sm: 4 }, // small horizontal padding on mobile
+          fontSize: { xs: '2rem', sm: '2.75rem', md: '3rem' }, // responsive font size
         }}
       >
         Why Choose Motus Drive?
       </Typography>
-      <Typography 
-        variant="h6" 
-        textAlign="center" 
-        color="#666666" 
-        sx={{ mb: 8 }}
+
+      {/* Subheading */}
+      <Typography
+        variant="h6"
+        textAlign="center"
+        color="#666666"
+        sx={{ mb: 8, px: { xs: 3, sm: 6, md: 12 }, fontSize: { xs: '1rem', sm: '1.125rem' } }}
       >
         We make learning to drive safe, convenient, and effective
       </Typography>
-      
-      <Box 
-        sx={{ 
-          display: 'flex', 
-          flexWrap: 'wrap', 
+
+      {/* Benefit Cards Container: flex wrap to wrap cards */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
           gap: 4,
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         {benefits.map(({ icon, title, text }, index) => (
           <Box
             key={title}
             sx={{
-              flex: '1 1 280px',
-              maxWidth: '320px',
-              minWidth: '280px',
+              flex: {
+                xs: '1 1 100%',    // full width on mobile (small devices)
+                sm: '1 1 45%',    // ~2 cards per row on tablets/small screens
+                md: '1 1 22%',    // ~4 cards per row on medium+ screens
+              },
+              maxWidth: { xs: '100%', sm: '45%', md: '22%' },
+              minWidth: '260px',  // ensures cards are not too narrow
               animation: `slideInUp 0.8s ease-out ${index * 0.2}s both`,
               '@keyframes slideInUp': {
-                '0%': { 
-                  opacity: 0, 
-                  transform: 'translateY(50px)' 
+                '0%': {
+                  opacity: 0,
+                  transform: 'translateY(50px)',
                 },
-                '100%': { 
-                  opacity: 1, 
-                  transform: 'translateY(0)' 
-                }
-              }
+                '100%': {
+                  opacity: 1,
+                  transform: 'translateY(0)',
+                },
+              },
             }}
           >
             <Card
-              sx={{ 
+              sx={{
                 height: '100%',
                 bgcolor: '#ffffff',
                 borderRadius: 3,
@@ -98,34 +108,47 @@ const Benefits: React.FC = () => (
                   right: 0,
                   height: '4px',
                   bgcolor: '#ff0000',
-                  borderRadius: '3px 3px 0 0'
-                }
+                  borderRadius: '3px 3px 0 0',
+                },
               }}
             >
               <CardContent sx={{ p: 4, textAlign: 'center' }}>
-                <Box 
-                  sx={{ 
+                <Box
+                  sx={{
                     mb: 3,
                     display: 'inline-flex',
                     p: 2,
                     borderRadius: '50%',
                     bgcolor: '#ff0000',
                     color: 'white',
-                    boxShadow: '0 4px 15px rgba(255,0,0,0.3)'
+                    boxShadow: '0 4px 15px rgba(255,0,0,0.3)',
+                    fontSize: { xs: '2rem', sm: '2.5rem' },
+                    // ensures icon is responsive in size
                   }}
                 >
                   {icon}
                 </Box>
-                <Typography 
-                  variant="h5" 
-                  fontWeight={700} 
-                  sx={{ mb: 2, color: '#222222' }}
+
+                <Typography
+                  variant="h5"
+                  fontWeight={700}
+                  sx={{
+                    mb: 2,
+                    color: '#222222',
+                    fontSize: { xs: '1.25rem', sm: '1.5rem' }, // responsive font size
+                  }}
                 >
                   {title}
                 </Typography>
-                <Typography 
+
+                <Typography
                   color="#666666"
-                  sx={{ lineHeight: 1.6, fontSize: '1rem' }}
+                  sx={{
+                    lineHeight: 1.6,
+                    fontSize: { xs: '0.95rem', sm: '1rem' },
+                    textAlign: 'left',
+                    px: { xs: 1, sm: 0 },
+                  }}
                 >
                   • {text}
                 </Typography>
