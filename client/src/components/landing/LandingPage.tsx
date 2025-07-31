@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Fade } from '@mui/material';
-import Navbar from './Navbar';
+import LearnerNavbar from '../navbars/LearnerNavbar'; // Adjust path as needed
 import Hero from './Hero';
 import Benefits from './Benefits';
 import Process from './Process';
@@ -20,7 +20,7 @@ const LandingPage: React.FC = () => {
       }}
     >
       {/* Fixed/Sticky Navigation */}
-      <Navbar />
+<LearnerNavbar />
       
       {/* Page Content with Smooth Scrolling */}
       <Box
