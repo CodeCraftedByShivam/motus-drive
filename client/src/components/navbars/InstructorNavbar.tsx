@@ -21,22 +21,26 @@ import {
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  Home as HomeIcon,
-  Info as InfoIcon,
+  Dashboard as DashboardIcon,
+  Schedule as ScheduleIcon,
+  People as PeopleIcon,
+  AttachMoney as EarningsIcon,
   Person as PersonIcon,
   ExpandMore,
-  School as SchoolIcon,
-  Assignment as AssignmentIcon,
-  EmojiEvents,
-  ListAlt,
-  History,
+  CalendarToday as CalendarIcon,
+  Assignment as BookingsIcon,
+  TrendingUp as ProgressIcon,
+  MenuBook as LessonPlansIcon,
+  RateReview as ReviewsIcon,
   DirectionsCar,
   Login as LoginIcon,
   Logout as LogoutIcon,
   Settings as SettingsIcon,
   AccountCircle,
-  LocalLibrary,
+  Payment as PaymentIcon,
+  Help as HelpIcon,
   PersonAdd,
+  School as SchoolIcon,
 } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
@@ -44,15 +48,14 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const servicesMenuItems = [
-  { label: 'Book a Session', icon: <AssignmentIcon fontSize="small" />, to: '/book-session' },
-  { label: 'Packages', icon: <ListAlt fontSize="small" />, to: '/packages' },
-  { label: 'Instructors', icon: <SchoolIcon fontSize="small" />, to: '/instructors' },
-  { label: 'License Help', icon: <EmojiEvents fontSize="small" />, to: '/license-help' },
-  { label: 'Track Progress', icon: <History fontSize="small" />, to: '/progress' },
-  { label: 'Mock LL Test', icon: <LocalLibrary fontSize="small" />, to: '/mock-ll-test' },
+  { label: 'My Calendar', icon: <CalendarIcon fontSize="small" />, to: '/instructor/calendar' },
+  { label: 'Active Bookings', icon: <BookingsIcon fontSize="small" />, to: '/instructor/bookings' },
+  { label: 'Student Progress', icon: <ProgressIcon fontSize="small" />, to: '/instructor/student-progress' },
+  { label: 'Lesson Plans', icon: <LessonPlansIcon fontSize="small" />, to: '/instructor/lesson-plans' },
+  { label: 'Feedback & Reviews', icon: <ReviewsIcon fontSize="small" />, to: '/instructor/reviews' },
 ];
 
-export default function LearnerNavbar() {
+export default function InstructorNavbar() {
   const { user, logout } = useAuth();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -90,10 +93,10 @@ export default function LearnerNavbar() {
   // Mobile Drawer Content
   const mobileDrawer = (
     <Box sx={{ width: 280 }} role="presentation" onClick={handleMobileDrawer}>
-      <Toolbar sx={{ bgcolor: '#222', color: '#fff', minHeight: 56 }}>
-        <DirectionsCar sx={{ color: '#ff0000', mr: 1, fontSize: 30 }} />
+      <Toolbar sx={{ bgcolor: '#1565c0', color: '#fff', minHeight: 56 }}>
+        <DirectionsCar sx={{ color: '#ffeb3b', mr: 1, fontSize: 30 }} />
         <Typography variant="h6" fontWeight={700}>
-          Motus Drive
+          Instructor Portal
         </Typography>
       </Toolbar>
       <Divider />
@@ -101,26 +104,42 @@ export default function LearnerNavbar() {
       {/* Main links */}
       <List>
         <ListItem disablePadding>
-          <ListItemButton component={RouterLink} to="/">
+          <ListItemButton component={RouterLink} to="/instructor/dashboard">
             <ListItemIcon>
-              <HomeIcon />
+              <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Home" />
+            <ListItemText primary="Dashboard" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={RouterLink} to="/about">
+          <ListItemButton component={RouterLink} to="/instructor/schedule">
             <ListItemIcon>
-              <InfoIcon />
+              <ScheduleIcon />
             </ListItemIcon>
-            <ListItemText primary="About Us" />
+            <ListItemText primary="Schedule" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={RouterLink} to="/instructor/students">
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Students" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={RouterLink} to="/instructor/earnings">
+            <ListItemIcon>
+              <EarningsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Earnings" />
           </ListItemButton>
         </ListItem>
 
         {/* Services Dropdown as a list */}
         <ListItem disablePadding>
           <ListItemText
-            primary={<Box sx={{ px: 2, mt: 1, fontWeight: 700 }}>Services</Box>}
+            primary={<Box sx={{ px: 2, mt: 1, fontWeight: 700 }}>Quick Actions</Box>}
           />
         </ListItem>
         {servicesMenuItems.map((item) => (
@@ -136,34 +155,34 @@ export default function LearnerNavbar() {
         <Divider sx={{ my: 1 }} />
         <ListItem disablePadding>
           <ListItemText
-            primary={<Box sx={{ px: 2, mt: 1, fontWeight: 700 }}>Profile</Box>}
+            primary={<Box sx={{ px: 2, mt: 1, fontWeight: 700 }}>Account</Box>}
           />
         </ListItem>
         {user ? (
           <>
             {/* Logged in */}
             <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/bookings">
+              <ListItemButton component={RouterLink} to="/instructor/profile">
                 <ListItemIcon>
-                  <AssignmentIcon />
+                  <PersonIcon />
                 </ListItemIcon>
-                <ListItemText primary="My Booking" />
+                <ListItemText primary="My Profile" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/progress">
-                <ListItemIcon>
-                  <History />
-                </ListItemIcon>
-                <ListItemText primary="My Progress" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/settings">
+              <ListItemButton component={RouterLink} to="/instructor/settings">
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
-                <ListItemText primary="Settings" />
+                <ListItemText primary="Account Settings" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={RouterLink} to="/instructor/payments">
+                <ListItemIcon>
+                  <PaymentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Payment Settings" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -179,19 +198,11 @@ export default function LearnerNavbar() {
           <>
             {/* Not logged in */}
             <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/login">
+              <ListItemButton component={RouterLink} to="/instructor/login">
                 <ListItemIcon>
                   <LoginIcon />
                 </ListItemIcon>
-                <ListItemText primary="Sign In / Sign Up" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/instructor-login">
-                <ListItemIcon>
-                  <PersonIcon />
-                </ListItemIcon>
-                <ListItemText primary="Login as Instructor" />
+                <ListItemText primary="Instructor Login" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -200,6 +211,14 @@ export default function LearnerNavbar() {
                   <PersonAdd />
                 </ListItemIcon>
                 <ListItemText primary="Become an Instructor" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={RouterLink} to="/">
+                <ListItemIcon>
+                  <SchoolIcon />
+                </ListItemIcon>
+                <ListItemText primary="Student Portal" />
               </ListItemButton>
             </ListItem>
           </>
@@ -225,10 +244,10 @@ export default function LearnerNavbar() {
           position="static" // Changed from fixed since wrapper handles positioning
           elevation={4}
           sx={{
-            bgcolor: '#222',
+            bgcolor: '#1565c0', // Professional blue color for instructors
             color: '#fff',
-            borderRadius: '20px',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.4)',
+            borderRadius: '20px', // All four corners rounded
+            boxShadow: '0 4px 8px rgba(21,101,192,0.4)',
           }}
         >
           <Toolbar sx={{ justifyContent: 'space-between', minHeight: { xs: 64, sm: 70 }, px: { xs: 2, sm: 4 } }}>
@@ -236,13 +255,13 @@ export default function LearnerNavbar() {
             <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
               <DirectionsCar
                 sx={{
-                  color: '#ff0000',
+                  color: '#ffeb3b', // Yellow accent for instructor portal
                   mr: 1,
                   fontSize: { xs: 28, sm: 35 },
                   transition: 'transform 0.3s ease',
                   '&:hover': {
                     transform: 'rotate(360deg)',
-                    color: '#ff4d4d',
+                    color: '#fff176',
                   },
                 }}
               />
@@ -250,17 +269,17 @@ export default function LearnerNavbar() {
                 variant="h4"
                 fontWeight={800}
                 component={RouterLink}
-                to="/"
+                to="/instructor/dashboard"
                 sx={{
                   color: 'white',
                   textDecoration: 'none',
-                  fontSize: { xs: '1.5rem', sm: '2rem' },
+                  fontSize: { xs: '1.3rem', sm: '1.8rem' },
                   userSelect: 'none',
                   transition: 'color 0.3s ease',
-                  '&:hover': { color: '#f79090ff' },
+                  '&:hover': { color: '#ffeb3b' },
                 }}
               >
-                Motus Drive
+                Instructor Portal
               </Typography>
             </Box>
 
@@ -273,47 +292,91 @@ export default function LearnerNavbar() {
                 {/* Nav Links */}
                 <Button
                   component={RouterLink}
-                  to="/"
+                  to="/instructor/dashboard"
                   color="inherit"
                   sx={{
                     fontWeight: 600,
-                    fontSize: '1.1rem',
+                    fontSize: '1rem',
                     borderRadius: '20px',
-                    px: 3,
+                    px: 2.5,
                     py: 1,
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#0d47a1',
                       color: 'white',
-                      boxShadow: '0 0 10px #353535ff',
+                      boxShadow: '0 0 10px #0d47a1',
                     },
                   }}
-                  startIcon={<HomeIcon />}
+                  startIcon={<DashboardIcon />}
                 >
-                  Home
+                  Dashboard
                 </Button>
                 <Button
                   component={RouterLink}
-                  to="/about"
+                  to="/instructor/schedule"
                   color="inherit"
                   sx={{
                     fontWeight: 600,
-                    fontSize: '1.1rem',
+                    fontSize: '1rem',
                     borderRadius: '20px',
-                    px: 3,
+                    px: 2.5,
                     py: 1,
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#1976d2',
                       color: 'white',
-                      boxShadow: '0 0 10px #353535ff',
+                      boxShadow: '0 0 10px #1976d2',
                     },
                   }}
-                  startIcon={<InfoIcon />}
+                  startIcon={<ScheduleIcon />}
                 >
-                  About Us
+                  Schedule
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to="/instructor/students"
+                  color="inherit"
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    borderRadius: '20px',
+                    px: 2.5,
+                    py: 1,
+                    textTransform: 'none',
+                    transition: 'background-color 0.3s ease, color 0.3s ease',
+                    '&:hover': {
+                      bgcolor: '#1e88e5',
+                      color: 'white',
+                      boxShadow: '0 0 10px #1e88e5',
+                    },
+                  }}
+                  startIcon={<PeopleIcon />}
+                >
+                  Students
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to="/instructor/earnings"
+                  color="inherit"
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    borderRadius: '20px',
+                    px: 2.5,
+                    py: 1,
+                    textTransform: 'none',
+                    transition: 'background-color 0.3s ease, color 0.3s ease',
+                    '&:hover': {
+                      bgcolor: '#42a5f5',
+                      color: 'white',
+                      boxShadow: '0 0 10px #42a5f5',
+                    },
+                  }}
+                  startIcon={<EarningsIcon />}
+                >
+                  Earnings
                 </Button>
 
                 {/* Services dropdown */}
@@ -323,22 +386,22 @@ export default function LearnerNavbar() {
                   endIcon={<ExpandMore />}
                   sx={{
                     fontWeight: 600,
-                    fontSize: '1.1rem',
+                    fontSize: '1rem',
                     borderRadius: '20px',
-                    px: 3,
+                    px: 2.5,
                     py: 1,
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#64b5f6',
                       color: 'white',
-                      boxShadow: '0 0 15px #353535ff',
+                      boxShadow: '0 0 15px #64b5f6',
                     },
                   }}
                   aria-haspopup="true"
                   aria-controls={servicesAnchor ? 'services-menu' : undefined}
                 >
-                  Services
+                  Quick Actions
                 </Button>
 
                 {/* Profile dropdown */}
@@ -347,24 +410,24 @@ export default function LearnerNavbar() {
                   onClick={handleProfileOpen}
                   sx={{
                     fontWeight: 600,
-                    fontSize: '1.1rem',
+                    fontSize: '1rem',
                     ml: 1,
                     minWidth: 36,
                     borderRadius: '20px',
-                    px: 3,
+                    px: 2.5,
                     py: 1,
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#90caf9',
                       color: 'white',
-                      boxShadow: '0 0 15px #353535ff',
+                      boxShadow: '0 0 15px #90caf9',
                     },
                   }}
                   startIcon={
                     user ? (
-                      <Avatar alt="User" sx={{ width: 28, height: 28 }}>
-                        {(user.name && user.name[0]) || 'U'}
+                      <Avatar alt="Instructor" sx={{ width: 28, height: 28 }}>
+                        {(user.name && user.name[0]) || 'I'}
                       </Avatar>
                     ) : (
                       <AccountCircle sx={{ fontSize: 28 }} />
@@ -432,47 +495,58 @@ export default function LearnerNavbar() {
           <>
             <MenuItem
               component={RouterLink}
-              to="/bookings"
+              to="/instructor/profile"
               onClick={handleProfileClose}
               sx={{ fontWeight: 600 }}
             >
               <ListItemIcon sx={{ minWidth: 36 }}>
-                <AssignmentIcon />
+                <PersonIcon />
               </ListItemIcon>
-              My Booking
+              My Profile
             </MenuItem>
             <MenuItem
               component={RouterLink}
-              to="/progress"
-              onClick={handleProfileClose}
-              sx={{ fontWeight: 600 }}
-            >
-              <ListItemIcon sx={{ minWidth: 36 }}>
-                <History />
-              </ListItemIcon>
-              My Progress
-            </MenuItem>
-            <MenuItem
-              component={RouterLink}
-              to="/settings"
+              to="/instructor/settings"
               onClick={handleProfileClose}
               sx={{ fontWeight: 600 }}
             >
               <ListItemIcon sx={{ minWidth: 36 }}>
                 <SettingsIcon />
               </ListItemIcon>
-              Settings
+              Account Settings
+            </MenuItem>
+            <MenuItem
+              component={RouterLink}
+              to="/instructor/payments"
+              onClick={handleProfileClose}
+              sx={{ fontWeight: 600 }}
+            >
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                <PaymentIcon />
+              </ListItemIcon>
+              Payment Settings
+            </MenuItem>
+            <MenuItem
+              component={RouterLink}
+              to="/instructor/help"
+              onClick={handleProfileClose}
+              sx={{ fontWeight: 600 }}
+            >
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                <HelpIcon />
+              </ListItemIcon>
+              Help & Support
             </MenuItem>
             <Divider />
             <MenuItem
               onClick={handleLogout}
               sx={{
                 fontWeight: 600,
-                color: '#ff0000',
+                color: '#d32f2f',
               }}
             >
               <ListItemIcon sx={{ minWidth: 36 }}>
-                <LogoutIcon sx={{ color: '#ff0000' }} />
+                <LogoutIcon sx={{ color: '#d32f2f' }} />
               </ListItemIcon>
               Logout
             </MenuItem>
@@ -481,25 +555,14 @@ export default function LearnerNavbar() {
           <>
             <MenuItem
               component={RouterLink}
-              to="/login"
+              to="/instructor/login"
               onClick={handleProfileClose}
               sx={{ fontWeight: 600 }}
             >
               <ListItemIcon sx={{ minWidth: 36 }}>
                 <LoginIcon />
               </ListItemIcon>
-              Sign In / Sign Up
-            </MenuItem>
-            <MenuItem
-              component={RouterLink}
-              to="/instructor-login"
-              onClick={handleProfileClose}
-              sx={{ fontWeight: 600 }}
-            >
-              <ListItemIcon sx={{ minWidth: 36 }}>
-                <PersonIcon />
-              </ListItemIcon>
-              Login as Instructor
+              Instructor Login
             </MenuItem>
             <MenuItem
               component={RouterLink}
@@ -512,6 +575,17 @@ export default function LearnerNavbar() {
               </ListItemIcon>
               Become an Instructor
             </MenuItem>
+            <MenuItem
+              component={RouterLink}
+              to="/"
+              onClick={handleProfileClose}
+              sx={{ fontWeight: 600 }}
+            >
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                <SchoolIcon />
+              </ListItemIcon>
+              Student Portal
+            </MenuItem>
           </>
         )}
       </Menu>
@@ -523,7 +597,7 @@ export default function LearnerNavbar() {
         onClose={handleMobileDrawer}
         ModalProps={{ keepMounted: true }}
         sx={{
-          '& .MuiDrawer-paper': { bgcolor: '#222', color: '#fff', width: 280, borderRadius: '0 0 0 20px' },
+          '& .MuiDrawer-paper': { bgcolor: '#1565c0', color: '#fff', width: 280, borderRadius: '0 0 0 20px' },
         }}
       >
         {mobileDrawer}

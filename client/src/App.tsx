@@ -2,14 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { CircularProgress, Box } from '@mui/material';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LandingPage from './components/landing/LandingPage';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import InstructorRegister from './components/auth/InstructorRegister';
 import Dashboard from './components/dashboard/Dashboard';
-import InstructorList from './components/instructors/InstructorList'; // Add this import
-import { CircularProgress, Box } from '@mui/material';
+import InstructorList from './components/instructors/InstructorList';
+import InstructorDashboard from './components/instructors/InstructorDashboard';
 
 const theme = createTheme({
   palette: {
@@ -25,7 +27,11 @@ const theme = createTheme({
   },
 });
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Role-based protected route component
+const ProtectedRoute: React.FC<{ 
+  children: React.ReactNode;
+  allowedRoles?: string[];
+}> = ({ children, allowedRoles = [] }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -36,7 +42,21 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     );
   }
 
-  return user ? <>{children}</> : <Navigate to="/login" />;
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+    // Redirect to appropriate dashboard based on user role
+    if (user.role === 'instructor') {
+      return <Navigate to="/instructor/dashboard" />;
+    } else if (user.role === 'learner') {
+      return <Navigate to="/dashboard" />;
+    }
+    return <Navigate to="/" />;
+  }
+
+  return <>{children}</>;
 };
 
 const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -50,7 +70,16 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
   }
 
-  return user ? <Navigate to="/dashboard" /> : <>{children}</>;
+  if (user) {
+    // Redirect to appropriate dashboard based on user role
+    if (user.role === 'instructor') {
+      return <Navigate to="/instructor/dashboard" />;
+    } else if (user.role === 'learner') {
+      return <Navigate to="/dashboard" />;
+    }
+  }
+
+  return <>{children}</>;
 };
 
 function App() {
@@ -61,10 +90,9 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route 
-              path="/instructors" 
-              element={<InstructorList />} // Add this route
-            />
+            <Route path="/instructors" element={<InstructorList />} />
+            
+            {/* Public routes */}
             <Route 
               path="/login" 
               element={
@@ -82,13 +110,35 @@ function App() {
               } 
             />
             <Route 
+              path="/register/instructor" 
+              element={
+                <PublicRoute>
+                  <InstructorRegister />
+                </PublicRoute>
+              } 
+            />
+            
+            {/* Protected routes for learners */}
+            <Route 
               path="/dashboard" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['learner']}>
                   <Dashboard />
                 </ProtectedRoute>
               } 
             />
+            
+            {/* Protected routes for instructors */}
+            <Route 
+              path="/instructor/dashboard" 
+              element={
+                <ProtectedRoute allowedRoles={['instructor']}>
+                  <InstructorDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
       </AuthProvider>

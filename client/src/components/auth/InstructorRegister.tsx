@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Box, Card, CardContent, TextField, Button, Typography, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { DirectionsCar, School } from '@mui/icons-material';
 
-const Register: React.FC = () => {
+const InstructorRegister: React.FC = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
   const [formData, setFormData] = useState({
@@ -34,12 +35,14 @@ const Register: React.FC = () => {
       setLoading(true);
       setError('');
       
-      // Register as learner (default role) - now passing 4 arguments
-      await register(formData.name, formData.email, formData.password, 'learner');
+      // Register as instructor
+      await register(formData.name, formData.email, formData.password, 'instructor');
       
-      // Will redirect to dashboard via App.tsx routing
+      // Redirect to instructor dashboard after successful registration
+      navigate('/instructor/dashboard', { replace: true });
+      
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -57,11 +60,15 @@ const Register: React.FC = () => {
       <Card sx={{ maxWidth: 400, width: '100%', borderRadius: 3, boxShadow: 4 }}>
         <CardContent sx={{ p: 4 }}>
           <Box sx={{ textAlign: 'center', mb: 3 }}>
-            <Typography variant="h4" fontWeight={700} sx={{ color: '#667eea', mb: 1 }}>
-              Create Account
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+              <DirectionsCar sx={{ color: '#1565c0', mr: 1, fontSize: 32 }} />
+              <School sx={{ color: '#ffeb3b', fontSize: 32 }} />
+            </Box>
+            <Typography variant="h4" fontWeight={700} sx={{ color: '#1565c0', mb: 1 }}>
+              Become an Instructor
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Join Motus Drive and start learning
+              Join our platform and start teaching driving skills
             </Typography>
           </Box>
 
@@ -122,15 +129,15 @@ const Register: React.FC = () => {
               size="large"
               disabled={loading}
               sx={{
-                bgcolor: '#667eea',
+                bgcolor: '#1565c0',
                 py: 1.5,
                 borderRadius: 2,
                 fontSize: '1.1rem',
                 fontWeight: 600,
-                '&:hover': { bgcolor: '#5a6fd8' }
+                '&:hover': { bgcolor: '#0d47a1' }
               }}
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? 'Creating Account...' : 'Register as Instructor'}
             </Button>
           </form>
 
@@ -140,7 +147,7 @@ const Register: React.FC = () => {
               <Button 
                 variant="text" 
                 onClick={() => navigate('/login')}
-                sx={{ color: '#667eea', fontWeight: 600 }}
+                sx={{ color: '#1565c0', fontWeight: 600 }}
               >
                 Sign In
               </Button>
@@ -152,4 +159,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default InstructorRegister;
