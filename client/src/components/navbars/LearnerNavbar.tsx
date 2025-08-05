@@ -40,6 +40,9 @@ import {
 } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
+// Import AuthModal
+import AuthModal from '../auth/AuthModal';
+
 // Replace with your own authentication hook
 import { useAuth } from '../../context/AuthContext';
 
@@ -64,6 +67,9 @@ export default function LearnerNavbar() {
 
   // Mobile drawer
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // AuthModal state
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   // Fixed handlers - ensure only one dropdown is open at a time
   const handleServicesOpen = (e: React.MouseEvent<HTMLElement>) => {
@@ -177,15 +183,39 @@ export default function LearnerNavbar() {
           </>
         ) : (
           <>
-            {/* Not logged in */}
+            {/* Not logged in - Updated with modal and registration options */}
             <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/login">
+              <ListItemButton onClick={() => {
+                setAuthModalOpen(true);
+                setMobileOpen(false);
+              }}>
                 <ListItemIcon>
                   <LoginIcon />
                 </ListItemIcon>
                 <ListItemText primary="Sign In / Sign Up" />
               </ListItemButton>
             </ListItem>
+            
+            {/* Register as Learner */}
+            <ListItem disablePadding>
+              <ListItemButton component={RouterLink} to="/register">
+                <ListItemIcon>
+                  <PersonAdd />
+                </ListItemIcon>
+                <ListItemText primary="Register as Learner" />
+              </ListItemButton>
+            </ListItem>
+            
+            {/* Register as Instructor */}
+            <ListItem disablePadding>
+              <ListItemButton component={RouterLink} to="/register/instructor">
+                <ListItemIcon>
+                  <SchoolIcon />
+                </ListItemIcon>
+                <ListItemText primary="Register as Instructor" />
+              </ListItemButton>
+            </ListItem>
+            
             <ListItem disablePadding>
               <ListItemButton component={RouterLink} to="/instructor-login">
                 <ListItemIcon>
@@ -227,7 +257,7 @@ export default function LearnerNavbar() {
           sx={{
             bgcolor: '#222',
             color: '#fff',
-            borderRadius: '20px',
+            borderRadius: '20px', // All four corners rounded
             boxShadow: '0 4px 8px rgba(0,0,0,0.4)',
           }}
         >
@@ -257,7 +287,7 @@ export default function LearnerNavbar() {
                   fontSize: { xs: '1.5rem', sm: '2rem' },
                   userSelect: 'none',
                   transition: 'color 0.3s ease',
-                  '&:hover': { color: '#f79090ff' },
+                  '&:hover': { color: '#ff0000' },
                 }}
               >
                 Motus Drive
@@ -284,9 +314,9 @@ export default function LearnerNavbar() {
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#ff0000',
                       color: 'white',
-                      boxShadow: '0 0 10px #353535ff',
+                      boxShadow: '0 0 10px #ff0000',
                     },
                   }}
                   startIcon={<HomeIcon />}
@@ -306,9 +336,9 @@ export default function LearnerNavbar() {
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#ff3333',
                       color: 'white',
-                      boxShadow: '0 0 10px #353535ff',
+                      boxShadow: '0 0 10px #ff3333',
                     },
                   }}
                   startIcon={<InfoIcon />}
@@ -330,9 +360,9 @@ export default function LearnerNavbar() {
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#ff6666',
                       color: 'white',
-                      boxShadow: '0 0 15px #353535ff',
+                      boxShadow: '0 0 15px #ff6666',
                     },
                   }}
                   aria-haspopup="true"
@@ -356,15 +386,15 @@ export default function LearnerNavbar() {
                     textTransform: 'none',
                     transition: 'background-color 0.3s ease, color 0.3s ease',
                     '&:hover': {
-                      bgcolor: '#353535ff',
+                      bgcolor: '#ff9999',
                       color: 'white',
-                      boxShadow: '0 0 15px #353535ff',
+                      boxShadow: '0 0 15px #ff9999',
                     },
                   }}
                   startIcon={
                     user ? (
                       <Avatar alt="User" sx={{ width: 28, height: 28 }}>
-                        {(user.name && user.name[0]) || 'U'}
+                        {(user.name && user.name) || 'U'}
                       </Avatar>
                     ) : (
                       <AccountCircle sx={{ fontSize: 28 }} />
@@ -382,7 +412,7 @@ export default function LearnerNavbar() {
         </AppBar>
       </Box>
 
-      {/* Services dropdown menu - DEFAULT BEHAVIOR */}
+      {/* Services dropdown menu */}
       <Menu
         id="services-menu"
         anchorEl={servicesAnchor}
@@ -394,7 +424,7 @@ export default function LearnerNavbar() {
           sx: {
             borderRadius: 3,
             minWidth: 220,
-            boxShadow: theme.shadows[5],
+            boxShadow: theme.shadows,
           },
         }}
       >
@@ -412,7 +442,7 @@ export default function LearnerNavbar() {
         ))}
       </Menu>
 
-      {/* Profile dropdown menu - DEFAULT BEHAVIOR */}
+      {/* Profile dropdown menu - UPDATED WITH MODAL INTEGRATION */}
       <Menu
         id="profile-menu"
         anchorEl={profileAnchor}
@@ -424,12 +454,13 @@ export default function LearnerNavbar() {
           sx: {
             borderRadius: 3,
             minWidth: 200,
-            boxShadow: theme.shadows[5],
+            boxShadow: theme.shadows,
           },
         }}
       >
         {user ? (
           <>
+            {/* Logged in user options */}
             <MenuItem
               component={RouterLink}
               to="/bookings"
@@ -479,10 +510,12 @@ export default function LearnerNavbar() {
           </>
         ) : (
           <>
+            {/* Not logged in - Updated with modal integration */}
             <MenuItem
-              component={RouterLink}
-              to="/login"
-              onClick={handleProfileClose}
+              onClick={() => {
+                setAuthModalOpen(true);
+                handleProfileClose();
+              }}
               sx={{ fontWeight: 600 }}
             >
               <ListItemIcon sx={{ minWidth: 36 }}>
@@ -490,6 +523,35 @@ export default function LearnerNavbar() {
               </ListItemIcon>
               Sign In / Sign Up
             </MenuItem>
+            
+            {/* Register as Learner */}
+            <MenuItem
+              component={RouterLink}
+              to="/register"
+              onClick={handleProfileClose}
+              sx={{ fontWeight: 600 }}
+            >
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                <PersonAdd />
+              </ListItemIcon>
+              Register as Learner
+            </MenuItem>
+            
+            {/* Register as Instructor */}
+            <MenuItem
+              component={RouterLink}
+              to="/register/instructor"
+              onClick={handleProfileClose}
+              sx={{ fontWeight: 600 }}
+            >
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                <SchoolIcon />
+              </ListItemIcon>
+              Register as Instructor
+            </MenuItem>
+            
+            <Divider sx={{ my: 1 }} />
+            
             <MenuItem
               component={RouterLink}
               to="/instructor-login"
@@ -529,7 +591,13 @@ export default function LearnerNavbar() {
         {mobileDrawer}
       </Drawer>
 
-      {/* Spacer for content below navbar - adjusted for new positioning */}
+      {/* AuthModal Component */}
+      <AuthModal 
+        open={authModalOpen} 
+        onClose={() => setAuthModalOpen(false)} 
+      />
+
+      {/* Spacer for content below navbar */}
       <Box sx={{ height: { xs: 88, sm: 110 } }} />
     </>
   );
